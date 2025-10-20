@@ -8,8 +8,10 @@
 ```
 state/
 ├── state.json               # 全体の進捗スナップショット
-├── tickets/                 # チケット原本（planner 管理）
-│   └── <ticket-id>.yaml
+├── tickets/                 # チケット原本（planner 管理、Markdown）
+│   └── <ticket-id>/
+│       ├── index.md
+│       └── C*-*.md
 ├── trace/                   # coder の実行ログ
 │   └── <ticket-id>/
 │       └── <timestamp>-<short-hash>.json
@@ -34,6 +36,7 @@ state/
       "dependencies": ["T-0098"],
       "links": {
         "requirements": ["requirements.md#performance"],
+        "tickets": ["state/tickets/T-0123/index.md"],
         "reports": ["state/reports/T-0123.md"]
       },
       "milestone": "2025Q1-perf",     // 任意
@@ -49,39 +52,54 @@ state/
 - coder / judge は `state.json` を直接触らず、更新が必要な場合は planner に依頼する。
 - 依存チケットが Done になった場合は planner が `dependencies` のリストを整理し、必要に応じて `Ready` へ遷移させる。
 
-## tickets/<ticket-id>.yaml
+## tickets/<ticket-id>/
 - planner が発行・保守するチケットの原本。SSOT (`requirements.md`) と同期する。
-- YAML を使い、Markdown を埋め込み可能なフィールドでは `|`（リテラルブロック）を利用する。
+- 各チケットは `state/tickets/<ticket-id>/` ディレクトリで管理し、以下の Markdown ファイルを必須とする。
+  - `index.md`: チケット全体のメタデータ・背景・受入基準を記述。
+  - `C*-*.md`: チェックポイント（C1, C2 ...）単位の実装手順書。`spec/tasks/implementation-tasks.md` のエントリに対応し、関数／クラス契約・テスト仕様を詳細化する。
 
-```yaml
-id: T-0123
-title: API レスポンス時間の改善
-problem: >
-  現状 API の p95 が 800ms と遅く、要件の 500ms を満たしていない。
-value: >
-  レイテンシ改善によりユーザー離脱率を抑え、SLA を満たす。
-acceptance_criteria:
-  - p95 <= 500ms (loadtest 1,000 rps)
-  - 主要エンドポイントのピーク時エラー率 < 0.5%
-tasks:
-  - name: ボトルネック調査
-    owner: planner:kei
-  - name: キャッシュ導入
-    owner: coder:hana
-dependencies:
-  - T-0098
-context: |
-  - 2025/01/10 planner:kei 作成
-  - judge の指摘でスコープ再確認済み
-created_by: planner:kei
-owners:
+````markdown
+---
+Ticket: T-0123
+Title: API レスポンス時間の改善
+Priority: P1
+Status: Backlog            # Backlog / Ready / In Progress / In Review / Done
+Assignees:
   - planner:kei
-  - coder:hana
-status_history:
-  - 2025-01-10: Backlog
-  - 2025-01-12: Ready
-  - 2025-01-14: In Progress
-```
+Dependencies:
+  - T-0098
+Tags: [performance, backend]
+Updated: 2025-01-12T07:31:22Z
+Links:
+  Requirements:
+    - spec/overview/requirements.md#performance
+  Reports:
+    - state/reports/T-0123.md
+---
+
+# Problem
+現状 API の p95 が 800ms と遅く、要件の 500ms を満たしていない。
+
+# Value
+レイテンシ改善によりユーザー離脱率を抑え、SLA を満たす。
+
+# Acceptance Criteria
+- p95 <= 500ms (loadtest 1,000 rps)
+- 主要エンドポイントのピーク時エラー率 < 0.5%
+
+# Checkpoints
+| ID | File | Purpose | Owner |
+|----|------|---------|-------|
+| C1 | C1-bottleneck-survey.md | ボトルネック調査 | planner:kei |
+| C2 | C2-cache-implementation.md | キャッシュ導入 | coder:hana |
+
+# History
+- 2025-01-10 Backlog (planner:kei)
+- 2025-01-12 Ready (planner:kei)
+````
+
+- `C*-*.md` の先頭にも Front Matter を置き、契約対象（例: `module: models/renderers/canonical_depth.py`, `public_api: CanonicalDepthRenderer.forward`) とテスト項目 (`pytest` コマンド等) を明記する。planner は `index.md` の表を更新して各チェックポイントの状態を同期させる。
+- `index.md` と `C*-*.md` は Markdown であるため、長文コンテキストや参考リンクを直接記述できる。各ファイルの最後に `# Trace` セクションを設け、関連 `state/trace/<ticket-id>/` エントリを列挙することを推奨。
 
 ### 更新ポリシー
 - 要件変更は planner が本ファイルと `requirements.md` を同期させる（差分は `trace` へ記録）。
@@ -166,3 +184,4 @@ Confidence: Medium         # Low / Medium / High
 - `state.json` は planner の判断が唯一の真実、tickets / trace / reports は各ロールの観点から補完する。
 - planner → coder → judge のフローで記録が揃っているか planner が `reports` を基に確認し、状態遷移と GitHub アクション（`spec/workflow/branching-strategy.md`）を判断する。
 - 外部参照（例: metrics, dashboards）は `links` や `artifacts` に URL / パスを記録し、ハルシネーション抑止と再検証の容易化を図る。
+- 設計ドキュメントは粒度に応じて 2 層構成にする：`spec/tasks/implementation-tasks.md` は P1/P0 単位の全体像を提供し、各チェックポイント C1/C2/... の詳細は `state/tickets/<ticket-id>/C*-*.md` にて関数・クラス契約レベルで定義する。planner は `state/tickets/<ticket-id>/index.md` の `Checkpoints` 表を更新し、coder / judge は該当 Markdown を実装・レビューの唯一の参照源とする。

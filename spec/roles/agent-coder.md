@@ -5,7 +5,7 @@
 - planner から割り当てられたチケットに対し、受入基準を満たす成果物と再現可能な手順を提供する。
 
 ## 主な責務
-- `state/tickets/<ticket-id>.yaml` に定義された要件を実装し、`requirements.md` を満たす。
+- `state/tickets/<ticket-id>/index.md` に定義された要件を実装し、`requirements.md` を満たす。
 - 実装・検証手順を `state/trace/<ticket-id>/` に記録（コマンドログ、環境、成果物）。
 - 単体/統合テストを実行し、結果を `state/reports/<ticket-id>.md` の `Test Results` と `What Was Done` に反映。
 - planner が共有する `spec/workflow/branching-strategy.md` に従い、feature ブランチで開発し、PR 作成・更新を行う。
@@ -14,7 +14,7 @@
 
 ## インプット
 - planner からのアサイン共有（優先度・ゴール・期日）。
-- 対応チケット (`state/tickets/*.yaml`) と SSOT (`requirements.md`)。
+- 対応チケット (`state/tickets/<ticket-id>/index.md`) と SSOT (`requirements.md`)。
 - 既存 `trace` / `reports` / コードベース。
 
 ## アウトプット

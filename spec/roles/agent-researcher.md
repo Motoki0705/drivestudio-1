@@ -11,7 +11,7 @@
 - 更新が必要な場合は planner と連携し、`requirements.md` やチケットにフィードバックを反映。
 
 ## インプット
-- planner からの質問・背景 (`state/tickets/*.yaml` や `reports` の参照)。
+- planner からの質問・背景 (`state/tickets/<ticket-id>/index.md` や `reports` の参照)。
 - 既存の SSOT / 実装状況 / リスク情報。
 
 ## アウトプット

@@ -77,6 +77,15 @@
   5. `gh` CLI のデフォルト設定：`gh repo set-default` でリポジトリを選択し、`gh pr create --base main --head <branch-name> --title "..." --body "..."` を実行。
   6. 併せて MCP ツール（`github__create_pull_request`）で PR を生成した場合はリンクと番号を `state/trace` に残す。
 
+## 既知インシデントと再発防止策
+- 2025-10-20 に発生した「feature/T-FR-ARCH-001 ブランチの親コミット誤りによる大規模差分発生について」（[Issue #9](https://github.com/Motoki0705/drivestudio-1/issues/9)）では、`spec/mcp-workflow-docs-followup` 上で新規 feature ブランチを切ったために 180 ファイル超の不要差分が混入した。  
+- 再発防止として以下を必須フローに追加する:  
+  1. ブランチ作成前に `git status` がクリーンで、`git branch --show-current` が `main` を指すことを確認する。  
+  2. `git merge-base --is-ancestor origin/main HEAD` が成功することをチェックし、失敗した場合は `git pull --rebase origin main`。  
+  3. ブランチ作成直後に `git diff --stat origin/main...HEAD` を実行し、意図した差分範囲のみになっているかセルフレビューする。  
+  4. 想定外の差分が混入した場合は Issue #9 の対処手順（ブランチ削除→main へ戻る→再作成→差分最小化）を踏襲し、`state/trace/` へ記録する。  
+- planner は Ready 遷移時にこのチェックリストを coder に共有し、`state/tickets/T-FR-ARCH-001/C*-*.md` に記載した成果物点検と併せて遵守させる。
+
 ## PR テンプレート（推奨項目）
 - Linked Ticket(s): `T-0123`
 - Summary: 実装内容／テスト結果の要約

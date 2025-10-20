@@ -8,7 +8,7 @@
 - `state/state.json` の更新とチケット状態遷移（No Status→Done）。
 - `spec/workflow/branching-strategy.md` に従い、GitHub のブランチ運用・PR 作成・マージを統制し、`state/` と同期させる。
 - GitHub 操作は MCP GitHub サーバー経由で行い、主要ツール（`github__create_branch` / `github__create_or_update_file` / `github__create_pull_request` / `github__list_pull_requests` 等）の呼び出し結果を `trace` に記録する。
-- `state/tickets/*.yaml` の作成・保守。SSOT に基づき受入基準を定義し、差分を随時反映。
+- `state/tickets/<ticket-id>/index.md` の作成・保守。SSOT に基づき受入基準を定義し、差分を随時反映。
 - coder・judge へのアサインとゴール設定。必要に応じ researcher を招集。
 - `state/reports/*.md` をレビューし、judge 審査に回すか再計画するかを決定。
 - リスクや阻害要因を即座に公開し、必要なリソース・情報を確保する。
@@ -20,7 +20,7 @@
 
 ## アウトプット
 - 更新済み `state/state.json`（ステータス/担当/依存整理）。
-- 明確なチケット (`state/tickets/*.yaml`) と優先度・締切。
+- 明確なチケット (`state/tickets/<ticket-id>/index.md`) と優先度・締切。
 - coder / judge / researcher 向けの指示・決定事項。
 - `reports` へのフィードバック、必要に応じた差戻し方針。
 
@@ -45,11 +45,11 @@
 1. SSOT と `state/tickets` の整合性を確認し、未着手チケットを `Backlog` へ整列。
 2. 依存解消済みのチケットを `Ready` に進め、担当 coder を割り当てて `In Progress` へ。必要に応じて feature ブランチを作成（`spec/workflow/branching-strategy.md` 参照）。
 3. `reports` 更新を監視し、受入基準を満たしたと判断したら PR 作成を指示し、`In Review` に移行して judge へ通知。
-4. judge の結論を反映し、承認時は PR マージ→`Done` で締結。差戻しの場合は理由を `tickets` に追記し、ブランチの対応方針を coder と調整。
+4. judge の結論を反映し、承認時は PR マージ→`Done` で締結。差戻しの場合は理由を `state/tickets/<ticket-id>/index.md` の `History` / `Notes` に追記し、ブランチの対応方針を coder と調整。
 5. 外部調査が必要な場合は researcher を起動し、結果を SSOT と `tickets` に取り込む。
 
 ## 定期チェックリスト
-- `state/state.json` と `tickets/*.yaml` の整合性（依存・担当・期日）。
+- `state/state.json` と `state/tickets/<ticket-id>/index.md` の整合性（依存・担当・期日）。
 - `reports` にテスト結果・残課題が揃っているか。
 - ブロッカーが 24 時間以上解消されていないチケットの有無。
 - SSOT の受入基準が最新の実装と一致しているか。

@@ -11,11 +11,23 @@
 - [ ] リスク・依存関係レビュー（Open3D 導入可否、GPU メモリ予算）
 
 ## P1: FR-ARCH-001 — SuGaR 正則化ステージ
-- [ ] カノニカル深度レンダラ拡張（カメラ別に Gaussian depth map 出力）
-- [ ] `̂f(p)` 推定ロジック（SuGaR Eq.8）と正則化損失の実装
-- [ ] MultiTrainer ステージ遷移 & opacity entropy スケジュール反映
-- [ ] ログ出力（`loss/sugar_surface`, `loss/sugar_norm`）と学習再開対応
-- [ ] 単体テスト `tests/models/test_sugar_losses.py`
+- [ ] C1 カノニカル深度レンダラ拡張  
+      実装: `models/renderers/canonical_depth.py` で CanonicalDepthRenderer を追加し、Hydra 設定 (`configs/omnire_sugar.yaml`) から各ビューの Gaussian depth map を生成。  
+      テスト: `tests/renderers/test_canonical_depth_renderer.py` で near/far 範囲と multi-instance の分割を検証。
+- [ ] C2 f̂(p) 推定ロジックと正則化損失  
+      実装: `models/losses/sugar.py` に `estimate_f_hat`, `sugar_surface_loss`, `sugar_normal_loss` を実装し、`loss/sugar_surface`・`loss/sugar_norm` をロガーへ登録。  
+      テスト: `tests/models/test_sugar_losses.py` で数値一致と勾配安定性 (`autograd.gradcheck`) を確認。
+- [ ] C3 MultiTrainer ステージ遷移 & opacity entropy スケジュール反映  
+      実装: `models/trainers/base.py` に StageSchedule を導入し、7k→2k→6k の切替と entropy 減衰を Hydra で制御。`models/trainers/single.py` / `scene_graph.py` からステージを参照。  
+      テスト: `tests/trainers/test_sugar_stage_schedule.py` でステージ進行と再開時の復元を検証。
+- [ ] C4 ログ出力 (`loss/sugar_surface`, `loss/sugar_norm`) と学習再開対応  
+      実装: Trainer の save/load でステージ情報を保持し、TensorBoard/CSV ロガーに SuGaR 指標を追加。  
+      テスト: `tests/trainers/test_sugar_resume.py` で checkpoint 復元後もロスが連続するか確認。
+- [ ] C5 単体テスト整備  
+      実装: `tests/conftest.py` にダミーシーン fixture を追加し、SuGaR 関連テストを pytest で 2 分以内に通過させる。  
+      テスト: `pytest -k sugar --maxfail=1` を CI タスク化し、全テストが pass。
+
+詳細要件と成果物は `state/tickets/T-FR-ARCH-001/` 配下の `C1-*.md` ～ `C5-*.md` を参照。
 
 ## P1: FR-MESH-002 — カノニカルメッシュ抽出
 - [ ] `utils/mesh/sugar_sampler.py`（レベルセット点群＆法線サンプラ）
