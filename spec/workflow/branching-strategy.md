@@ -69,6 +69,13 @@
 - **トラブルシューティング**
   - 認証エラー時は MCP サーバーログを確認し、PAT のスコープ（`repo`）や環境変数名のスペルミスを点検。
   - ネットワーク制限に注意し、必要なら `curl https://api.github.com` で疎通確認を取ってから再試行する。
+- **Git push / PR 作成手順（再現用）**
+  1. ネットワークを確認：`curl -I https://github.com` と `curl -I https://api.github.com` が 200 を返すことを確認。
+  2. SSH 資格情報を検証：`ssh -T git@github.com` でホストに到達できるかチェック。到達できない場合は DNS 設定や PAT の有無を点検。
+  3. リモート URL を統一：`git remote set-url origin git@github.com:Motoki0705/drivestudio-1.git` で SSH 経由に切替え、`git remote -v` で確認。
+  4. ブランチを push：`git push -u origin <branch-name>`。初回は必要に応じて `with_escalated_permissions` 付きで実行し、`trace` にコマンドと結果を記録。
+  5. `gh` CLI のデフォルト設定：`gh repo set-default` でリポジトリを選択し、`gh pr create --base main --head <branch-name> --title "..." --body "..."` を実行。
+  6. 併せて MCP ツール（`github__create_pull_request`）で PR を生成した場合はリンクと番号を `state/trace` に残す。
 
 ## PR テンプレート（推奨項目）
 - Linked Ticket(s): `T-0123`

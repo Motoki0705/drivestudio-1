@@ -39,6 +39,7 @@
 4. **PR 開始**: レビュー許可後は `/tool github__create_pull_request {"owner":"...","repo":"...","head":"feature/...","base":"main","title":"...","body":"..."}`
    を発行し、テンプレ記載事項を編集。進行中 PR は `/tool github__list_pull_requests {"owner":"...","repo":"...","state":"open"}` で監視。
 5. **ステータス確認**: CI やレビューステータスは `/tool github__get_pull_request_status`・`github__get_pull_request_files` で取得し、judge や coder へフィードバック。
+6. **ローカル push / PR 発行**: `curl -I https://github.com` / `curl -I https://api.github.com` で疎通確認 → `ssh -T git@github.com` で資格情報を検証し、`git remote set-url origin git@github.com:Motoki0705/drivestudio-1.git` → `git push -u origin <branch>` → `gh repo set-default` → `gh pr create ...` の順で実施。実行コマンドと結果は `state/trace` に書き残す。
 
 ## ワークフロー（ループ）
 1. SSOT と `state/tickets` の整合性を確認し、未着手チケットを `Backlog` へ整列。
