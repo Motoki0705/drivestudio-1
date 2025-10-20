@@ -27,6 +27,9 @@
 ### tasks/ — 実務タスク
 - [implementation-tasks.md](tasks/implementation-tasks.md)：進行中／予定の実装タスク、優先順位、担当。
 
+### resouce/ — リファレンス資料
+- [SuGaR.pdf](resouce/SuGaR.pdf)：SuGaR 実装のベースとなる論文。PDF は `uv run --with PyPDF2 ...`（例：`uv run --with PyPDF2 python - <<'PY'` など）で読み出し・抽出が可能。
+
 ## 参照ガイド
 - **新規メンバー**：まず `overview/requirements.md` と `workflow/agents.md` を読み、体制とゴールを把握。
 - **planner**：日次で `roles/agent-planner.md` を参照し、`workflow/state-formats.md` と `workflow/branching-strategy.md` をセット運用。
