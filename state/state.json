@@ -12,7 +12,7 @@
           "spec/overview/requirements.md#fr-arch-001"
         ],
         "tickets": [
-          "state/tickets/T-FR-ARCH-001.yaml"
+          "state/tickets/T-FR-ARCH-001/index.md"
         ],
         "reports": [
           "state/reports/T-FR-ARCH-001.md"
@@ -25,7 +25,7 @@
       "status_history": [
         "2025-10-17: Backlog"
       ],
-      "notes": "Planner が state/tickets/T-FR-ARCH-001.yaml を整備済み。実装アサイン待ち。"
+      "notes": "Planner が state/tickets/T-FR-ARCH-001/index.md を整備済み。実装アサイン待ち。"
     },
     "T-FR-MESH-002": {
       "title": "カノニカルメッシュ抽出パイプライン",
