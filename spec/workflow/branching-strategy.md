@@ -56,7 +56,7 @@
 ## MCP 経由 GitHub 操作（planner ガイド）
 - **前提設定**: `~/.codex/config.toml` の `mcp_servers.github.env` に `GITHUB_PERSONAL_ACCESS_TOKEN` を設定し、`npx -y @modelcontextprotocol/server-github` を起動したターミナルを開いたままにする。
 - **共通呼び出し**: Codex CLI から `/tool <name> { ... }` 形式で GitHub MCP ツールを実行する。主要ツールと用途は次の通り。
-  - ブランチ作成: `github__create_branch {"owner":"<acct>","repo":"<repo>","branch":"feature/...","from_branch":"main"}`。
+  - ブランチ作成: `github__create_branch {"owner":"Motoki0705","repo":"drivestudio-1","branch":"feature/...","from_branch":"main"}`。
   - ファイル編集コミット: `github__create_or_update_file {"owner":"...","repo":"...","branch":"feature/...","path":"src/...","message":"...","content":"<base64>"}`。
   - Issue 発行: `github__create_issue {"owner":"...","repo":"...","title":"...","body":"..."}`（チケット同期用）。
   - PR 作成: `github__create_pull_request {"owner":"...","repo":"...","head":"feature/...","base":"main","title":"...","body":"..."}`。
