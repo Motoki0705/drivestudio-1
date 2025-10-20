@@ -1,0 +1,100 @@
+{
+  "updated_at": "2025-10-18T02:30:00Z",
+  "tickets": {
+    "T-FR-ARCH-001": {
+      "title": "SuGaR 正則化ステージ導入",
+      "status": "Backlog",
+      "assignees": [],
+      "priority": "P1",
+      "dependencies": [],
+      "links": {
+        "requirements": [
+          "spec/overview/requirements.md#fr-arch-001"
+        ],
+        "tickets": [
+          "state/tickets/T-FR-ARCH-001.yaml"
+        ],
+        "reports": [
+          "state/reports/T-FR-ARCH-001.md"
+        ],
+        "trace": [
+          "state/trace/T-FR-ARCH-001/"
+        ]
+      },
+      "tags": ["architecture", "sugar"],
+      "status_history": [
+        "2025-10-17: Backlog"
+      ],
+      "notes": "Planner が state/tickets/T-FR-ARCH-001.yaml を整備済み。実装アサイン待ち。"
+    },
+    "T-FR-MESH-002": {
+      "title": "カノニカルメッシュ抽出パイプライン",
+      "status": "Backlog",
+      "assignees": [],
+      "priority": "High",
+      "dependencies": [],
+      "links": {
+        "requirements": [
+          "spec/overview/requirements.md#fr-mesh-002"
+        ],
+        "reports": [
+          "state/reports/T-FR-MESH-002.md"
+        ],
+        "trace": [
+          "state/trace/T-FR-MESH-002/"
+        ]
+      },
+      "tags": ["mesh", "sugar"],
+      "status_history": [
+        "2025-10-17: Backlog"
+      ],
+      "notes": "Poisson backend 決定待ち。"
+    },
+    "T-FR-ARCH-003": {
+      "title": "Surface-bound Gaussian 実装",
+      "status": "Backlog",
+      "assignees": [],
+      "priority": "Medium",
+      "dependencies": ["T-FR-MESH-002"],
+      "links": {
+        "requirements": [
+          "spec/overview/requirements.md#fr-arch-003"
+        ],
+        "reports": [
+          "state/reports/T-FR-ARCH-003.md"
+        ],
+        "trace": [
+          "state/trace/T-FR-ARCH-003/"
+        ]
+      },
+      "tags": ["architecture", "gaussian"],
+      "status_history": [
+        "2025-10-17: Backlog"
+      ],
+      "notes": "Mesh extractor 完了後に着手。"
+    },
+    "T-FR-OPS-004": {
+      "title": "SuGaR パイプライン CLI オーケストレーション",
+      "status": "Backlog",
+      "assignees": [],
+      "priority": "Medium",
+      "dependencies": ["T-FR-ARCH-001", "T-FR-MESH-002"],
+      "links": {
+        "requirements": [
+          "spec/overview/requirements.md#fr-ops-004"
+        ],
+        "reports": [
+          "state/reports/T-FR-OPS-004.md"
+        ],
+        "trace": [
+          "state/trace/T-FR-OPS-004/"
+        ]
+      },
+      "tags": ["ops", "pipeline"],
+      "status_history": [
+        "2025-10-17: Backlog"
+      ],
+      "notes": "他 FR の進捗を待ちつつ CLI 設計を先行。"
+    }
+  }
+}
